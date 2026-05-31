@@ -63,6 +63,12 @@ extern AudioThread *audioThread;
 extern UdpMulticastHandler *udpHandler;
 #endif
 
+#ifdef HAS_SERIAL_BRIDGE
+// Full definition is in SerialBridgeHandler.h; include it where the type is needed.
+class SerialBridgeHandler;
+extern SerialBridgeHandler *serialBridgeHandler;
+#endif
+
 // Global Screen singleton.
 extern graphics::Screen *screen;
 

@@ -16,6 +16,9 @@
 #include "mqtt/MQTT.h"
 #endif
 #include "Default.h"
+#ifdef HAS_SERIAL_BRIDGE
+#include "mesh/serial/SerialBridgeHandler.h"
+#endif
 #if ARCH_PORTDUINO
 #include "Throttle.h"
 #include "platform/portduino/PortduinoGlue.h"
@@ -389,6 +392,11 @@ ErrorCode Router::send(meshtastic_MeshPacket *p)
     if (udpHandler && config.network.enabled_protocols & meshtastic_Config_NetworkConfig_ProtocolFlags_UDP_BROADCAST) {
         udpHandler->onSend(const_cast<meshtastic_MeshPacket *>(p));
     }
+#endif
+
+#ifdef HAS_SERIAL_BRIDGE
+    if (serialBridgeHandler)
+        serialBridgeHandler->onSend(p);
 #endif
 
     assert(iface); // This should have been detected already in sendLocal (or we just received a packet from outside)

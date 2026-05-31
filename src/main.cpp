@@ -147,6 +147,11 @@ extern void tftSetup(void);
 UdpMulticastHandler *udpHandler = nullptr;
 #endif
 
+#ifdef HAS_SERIAL_BRIDGE
+#include "mesh/serial/SerialBridgeHandler.h"
+SerialBridgeHandler *serialBridgeHandler = nullptr;
+#endif
+
 #if defined(TCXO_OPTIONAL)
 float tcxoVoltage = SX126X_DIO3_TCXO_VOLTAGE; // if TCXO is optional, put this here so it can be changed further down.
 #endif
@@ -885,6 +890,13 @@ void setup()
     }
 #endif
 #endif
+
+#ifdef HAS_SERIAL_BRIDGE
+    LOG_DEBUG("Start serial bridge");
+    serialBridgeHandler = new SerialBridgeHandler();
+    serialBridgeHandler->start();
+#endif
+
     service = new MeshService();
     service->init();
 
